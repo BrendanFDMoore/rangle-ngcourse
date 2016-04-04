@@ -4,6 +4,9 @@
 
     <script src="/bower_components/angular/angular.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+    <script src="/app/app.js"></script>    
+    <script src="/app/components/main/main-controller.js"></script>
+    <script src="/app/sections/task-list/task-list-controller.js"></script>
   </head>
   <body>
     <div ng-app="ngcourse">
@@ -13,13 +16,14 @@
           Password: <input type="password" ng-model="password"/><br/>
           <button ng-click="login()">Login</button>
         </div>
-        <div ng-show="isAuthenticated">
-          Hello, {{username}}!
-          You've got {{numberOfTasks}} tasks<br/>
+
+        <div ng-show="isAuthenticated" ng-controller="TaskListCtrl">
+          {{username}}, you've got {{numberOfTasks}} tasks<br/>
           <button ng-click="addTask()">Add task</button>
         </div>
       </div>
     </div>
-    <script src="/app/app.js"></script>
+    
+
   </body>
 </html>
