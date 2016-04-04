@@ -8,8 +8,11 @@
   <body>
     <div ng-app="ngcourse">
       <div ng-controller="MainCtrl">
+        Enter username: <input ng-model="username"/><br/>
+        <br/>
         Hello, {{username}}!
-        You've got {{numberOfTasks}} tasks.
+        You've got {{numberOfTasks}} tasks
+        {{ username }} has {{numberOfTasks}} tasks.<br/>
         <button ng-click="addTask()">Add task</button>
       </div>
     </div>
