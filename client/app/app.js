@@ -8,9 +8,9 @@ angular.module('ngcourse', [])
     $log.debug('Current number of tasks:', $scope.numberOfTasks);
     $scope.numberOfTasks += 1;
   };
-  $scope.$watch('username', function(newValue, oldValue) {
-    $log.info(newValue, oldValue);
-  });
+  $scope.login = function() {
+    $scope.isAuthenticated = true;
+  };
 })
 .run(function($log) {
   $log.info('All ready!');

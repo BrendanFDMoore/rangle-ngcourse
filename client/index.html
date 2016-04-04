@@ -8,12 +8,16 @@
   <body>
     <div ng-app="ngcourse">
       <div ng-controller="MainCtrl">
-        Enter username: <input ng-model="username"/><br/>
-        <br/>
-        Hello, {{username}}!
-        You've got {{numberOfTasks}} tasks
-        {{ username }} has {{numberOfTasks}} tasks.<br/>
-        <button ng-click="addTask()">Add task</button>
+        <div ng-hide="isAuthenticated">
+          Enter username: <input ng-model="username"/><br/>
+          Password: <input type="password" ng-model="password"/><br/>
+          <button ng-click="login()">Login</button>
+        </div>
+        <div ng-show="isAuthenticated">
+          Hello, {{username}}!
+          You've got {{numberOfTasks}} tasks<br/>
+          <button ng-click="addTask()">Add task</button>
+        </div>
       </div>
     </div>
     <script src="/app/app.js"></script>
