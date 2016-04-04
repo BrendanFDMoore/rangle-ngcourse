@@ -1,11 +1,6 @@
 'use strict';
 
-angular.module('ngcourse', [
-  'ngcourse.tasks',
-  'ngcourse.server',
-  'ngcourse.router',
-  'ngcourse.users'
-])
+angular.module('ngcourse', [])
 .run(function($log) {
   $log.info('All ready!');
 });
