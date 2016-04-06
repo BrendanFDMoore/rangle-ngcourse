@@ -15,11 +15,14 @@
           Enter username: <input ng-model="username"/><br/>
           Password: <input type="password" ng-model="password"/><br/>
           <button ng-click="login()">Login</button>
-        </div>
 
+        </div>
+        <button ng-click="messageChild()">Broadcast to Child</button>
+        
         <div ng-show="isAuthenticated" ng-controller="TaskListCtrl">
           {{username}}, you've got {{numberOfTasks}} tasks<br/>
           <button ng-click="addTask()">Add task</button>
+          <button ng-click="messageParent()">Emit to Parent</button>
         </div>
       </div>
     </div>
