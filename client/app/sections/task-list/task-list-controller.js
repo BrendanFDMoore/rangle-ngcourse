@@ -2,33 +2,13 @@
 
 angular.module('ngcourse')
 
-.controller('TaskListCtrl', function($log, $http, $filter, users) {
+.controller('TaskListCtrl', function($log, $http, $filter, users, tasks) {
 
   var vm = this;
 
-  vm.tasks = [];
+  vm.tasks = [];  
 
-  vm.filterTasks = function(alltasks, mask){
-    return $filter('filter')(alltasks, mask, true);;
-  };
-
-  function getTasks() {
-    return $http.get('http://ngcourse.herokuapp.com/api/v1/tasks')
-      .then(function(response) {
-        return response.data;
-      });
-  }
-
-  function getMyTasks() {
-    return getTasks()
-      .then(function(tasks) {
-        return vm.filterTasks(tasks, {
-          owner: users.getUsername()||'alice'
-        });
-      });
-  }
-
-  getMyTasks()
+  tasks.getMyTasks(users.getUsername()||'alice')
     .then(function(tasks) {
       $log.info(tasks);
       vm.tasks = tasks;
