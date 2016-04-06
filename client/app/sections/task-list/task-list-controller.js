@@ -23,9 +23,7 @@ angular.module('ngcourse')
       $log.info(tasks);
       vm.tasks = tasks;
     })
-    .then(null, function(error) {
-      $log.error(error);
-    });
+    .then(null, $log.error);
 
   vm.addTask = function() {
     vm.tasks.push({owner:'alice',description:'Some new task...'})
