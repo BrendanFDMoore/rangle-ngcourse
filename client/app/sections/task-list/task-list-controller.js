@@ -9,12 +9,12 @@ angular.module('ngcourse')
   vm.tasks = [];
 
   $http.get('http://ngcourse.herokuapp.com/api/v1/tasks')
-    .success(function(data, status) {
-      $log.info(data);
-      vm.tasks = data;
+    .then(function(response) {
+      $log.info(response);
+      vm.tasks = response.data;
     })
-    .error(function(data, status) {
-      $log.error(status, data);
+    .then(null, function(error) {
+      $log.error(error);
     });
 
   vm.addTask = function() {
