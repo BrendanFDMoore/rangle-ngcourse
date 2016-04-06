@@ -4,11 +4,11 @@ angular.module('ngcourse')
 
 .controller('MainCtrl', function($log, $window) {
   var vm = this;
-  vm.username = 'alice';  
   vm.isAuthenticated = false;
-
-  vm.login = function() {
+  vm.login = function(username, password) {
     vm.isAuthenticated = true;
+    vm.username = username;
+    vm.password = password;
   };
 
 })

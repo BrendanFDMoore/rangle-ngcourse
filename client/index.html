@@ -6,20 +6,26 @@
     <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
     <script src="/app/app.js"></script>    
     <script src="/app/components/main/main-controller.js"></script>
+    <script src="/app/components/login-form/login-form-controller.js"></script>
     <script src="/app/sections/task-list/task-list-controller.js"></script>
   </head>
   <body>
     <div ng-app="ngcourse">
       <div ng-controller="MainCtrl as main">
-        <div ng-hide="main.isAuthenticated">
-          Enter username: <input ng-model="main.username"/><br/>
-          Password: <input type="password" ng-model="main.password"/><br/>
-          <button ng-click="main.login()">Login</button>
+        <div ng-hide="main.isAuthenticated" ng-controller="LoginFormCtrl as loginForm">
+          Enter username: <input ng-model="loginForm.username"/><br/>
+          Password: <input type="password" ng-model="loginForm.password"/><br/>
+          <div ng-show="main.errorMessage">{{main.errorMessage}}</div>
+          <button ng-click="main.login(loginForm.username, loginForm.password)">Login</button>
+        </div>
 
-        </div>        
+        <div ng-show="main.isAuthenticated">
+          Hello, {{main.username}}!
+        </div>
 
         <div ng-show="main.isAuthenticated" ng-controller="TaskListCtrl as taskList">
           {{main.username}}, you've got {{taskList.numberOfTasks}} tasks<br/>
+
           <button ng-click="taskList.addTask()">Add task</button>          
         </div>
       </div>
