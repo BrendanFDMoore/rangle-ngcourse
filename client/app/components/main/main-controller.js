@@ -2,7 +2,7 @@
 
 angular.module('ngcourse')
 
-.controller('MainCtrl', function($log, $window) {
+.controller('MainCtrl', function($log, $http) {
   var vm = this;
   vm.isAuthenticated = false;
   vm.login = function(username, password) {
