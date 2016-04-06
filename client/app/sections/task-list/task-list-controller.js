@@ -22,7 +22,8 @@ angular.module('ngcourse')
     .then(function(tasks) {
       $log.info(tasks);
       vm.tasks = tasks;
-    }, function(error) {
+    })
+    .then(null, function(error) {
       $log.error(error);
     });
 
