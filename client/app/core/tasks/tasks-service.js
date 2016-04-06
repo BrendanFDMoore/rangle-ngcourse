@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngcourse.tasks', [])
-.factory('tasks', function($http, $filter) {
+.factory('tasks', function($http, $filter, server) {
   var service = {};
 
   service.filterTasks = function(alltasks, mask){
@@ -9,10 +9,7 @@ angular.module('ngcourse.tasks', [])
   };
 
   service.getTasks = function () {
-    return $http.get('http://ngcourse.herokuapp.com/api/v1/tasks')
-      .then(function(response) {
-        return response.data;
-      });
+    return server.get('/api/v1/tasks');
   };
 
   service.getMyTasks = function (username) {
