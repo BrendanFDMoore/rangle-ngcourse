@@ -1,12 +1,12 @@
-angular.module('ngcourse.server', [])
+'use strict';
 
-  .factory('server', function($http) {
+angular.module('ngcourse.server', [])
+  .constant('API_BASE_URL', 'http://ngcourse.herokuapp.com')
+  .factory('server', function($http, API_BASE_URL) {
     var service = {};
 
-    var baseUrl = 'http://ngcourse.herokuapp.com';
-
     service.get = function (path) {
-      return $http.get(baseUrl + path)
+      return $http.get(API_BASE_URL + path)
         .then(function(response) {
           return response.data;
         });
