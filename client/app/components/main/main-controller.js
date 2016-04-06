@@ -2,21 +2,15 @@
 
 angular.module('ngcourse')
 
-.controller('MainCtrl', function($scope, $log, $window) {
-  $scope.username = 'alice';  
-  $scope.isAuthenticated = false;
+.controller('MainCtrl', function($log, $window) {
+  var vm = this;
+  vm.username = 'alice';  
+  vm.isAuthenticated = false;
 
-  $scope.login = function() {
-    $scope.isAuthenticated = true;
+  vm.login = function() {
+    vm.isAuthenticated = true;
   };
 
-  $scope.messageChild = function() {
-    $scope.$broadcast('hello.child', {fruit: 'peaches'});
-  };
-
-  $scope.$on('hello.parent', function(event, payload) {
-    $window.alert(payload.animal);
-  });
 })
 .run(function($log) {
   $log.info('MainCtrl ready!');

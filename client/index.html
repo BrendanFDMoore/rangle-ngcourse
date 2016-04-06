@@ -10,19 +10,17 @@
   </head>
   <body>
     <div ng-app="ngcourse">
-      <div ng-controller="MainCtrl">
-        <div ng-hide="isAuthenticated">
-          Enter username: <input ng-model="username"/><br/>
-          Password: <input type="password" ng-model="password"/><br/>
-          <button ng-click="login()">Login</button>
+      <div ng-controller="MainCtrl as main">
+        <div ng-hide="main.isAuthenticated">
+          Enter username: <input ng-model="main.username"/><br/>
+          Password: <input type="password" ng-model="main.password"/><br/>
+          <button ng-click="main.login()">Login</button>
 
-        </div>
-        <button ng-click="messageChild()">Broadcast to Child</button>
-        
-        <div ng-show="isAuthenticated" ng-controller="TaskListCtrl">
-          {{username}}, you've got {{numberOfTasks}} tasks<br/>
-          <button ng-click="addTask()">Add task</button>
-          <button ng-click="messageParent()">Emit to Parent</button>
+        </div>        
+
+        <div ng-show="main.isAuthenticated" ng-controller="TaskListCtrl as taskList">
+          {{main.username}}, you've got {{taskList.numberOfTasks}} tasks<br/>
+          <button ng-click="taskList.addTask()">Add task</button>          
         </div>
       </div>
     </div>
