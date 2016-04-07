@@ -1,7 +1,7 @@
 // Define a test suite.
 describe('tasks', function () {
   // Define a test.
-  it.only('should have 2*2 be equal to 4', function () {
+  it('should have 2*2 be equal to 4', function () {
     var x;
     // Do something.
     x = 2 * 2;
