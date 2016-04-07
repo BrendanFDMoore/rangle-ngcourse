@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngcourse.users', [])
-.factory('users', function($http, $q) {
+.factory('users', function($q) {
   var service = {};
   service.userAuthPromise = $q.defer();
 
