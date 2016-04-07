@@ -40,25 +40,18 @@
 
 
 
-    it('should get tasks', function(done) {
-      // Notice that we've specified that our function takes a 'done' argument.
-      // This tells Mocha this is an asynchronous test. An asynchronous test will
-      // not be considered 'successful' until done() is called without any
-      // arguments. If we call done() with an argument the test fails, treating
-      // that argument as an error.
+    it('should get tasks', function() {
+      // Setup a variable to store injected services.
+      var injected = {};
+      // Run inject() to inject service.
       inject(function (tasks) {
-
-        tasks.getTasks()
-          // Attach the handler for resolved promise.
-          .then(function (tasks) {
-            // Assertions thrown here will result to a failed promise downstream.
-            expect(tasks.length).to.equal(1);
-            // Remember to call done(), otherwise the test will time out (and
-            // fail).
-            done();
-          })
-          // Attach the error handler. This is very important and easy to forget.
-          .then(null, done);
+        injected.tasks = tasks;
       });
+      // Write a test that returns a promise;
+      return injected.tasks.getTasks()
+        .then(function (tasks) {
+          expect(tasks.length).to.equal(1);
+          // We no longer need to call done()
+        });
     });
   });
