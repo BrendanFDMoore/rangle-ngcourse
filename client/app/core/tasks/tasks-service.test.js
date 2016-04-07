@@ -26,10 +26,10 @@
           description: 'Mow the lawn'
         }];
 
-        service.get = function () {
+        service.get = sinon.spy(function () {
           return Q.when(data);
           // or try this: Q.reject(new Error('Some Error'));
-        };
+        });
         return service;
       });
       // Mock $q.
@@ -45,6 +45,19 @@
       return tasks.getTasks()
         .then(function (receivedTasks) {
           expect(receivedTasks.length).to.equal(1);
+        });
+    });
+
+    it('should only call server.get once', function() {
+      var tasks = getService('tasks');
+      var server = getService('server');
+      server.get.reset(); // Reset the spy.
+      return tasks.getTasks() // Call getTasks the first time.
+        .then(function () {
+          return tasks.getTasks(); // Call it again.
+        })
+        .then(function () {
+          server.get.should.have.been.calledOnce; // Check the number of calls.
         });
     });
   });
