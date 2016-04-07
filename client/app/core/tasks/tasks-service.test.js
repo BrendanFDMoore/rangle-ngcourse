@@ -58,9 +58,7 @@
             done();
           })
           // Attach the error handler. This is very important and easy to forget.
-          .then(null, function(error) {
-            done(error); // This can be simplified - see below.
-          });
+          .then(null, done);
       });
     });
   });
