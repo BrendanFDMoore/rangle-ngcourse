@@ -41,17 +41,10 @@
 
 
     it('should get tasks', function() {
-      // Setup a variable to store injected services.
-      var injected = {};
-      // Run inject() to inject service.
-      inject(function (tasks) {
-        injected.tasks = tasks;
-      });
-      // Write a test that returns a promise;
-      return injected.tasks.getTasks()
-        .then(function (tasks) {
-          expect(tasks.length).to.equal(1);
-          // We no longer need to call done()
+      var tasks = getService('tasks');
+      return tasks.getTasks()
+        .then(function (receivedTasks) {
+          expect(receivedTasks.length).to.equal(1);
         });
     });
   });
