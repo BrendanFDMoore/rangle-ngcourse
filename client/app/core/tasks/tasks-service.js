@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('ngcourse.tasks', [])
-.factory('tasks', function($http, $filter, server, users) {
+.factory('tasks', function($filter, server, users) {
   var service = {};
 
   service.filterTasks = function(alltasks, mask){
-    return $filter('filter')(alltasks, mask, true);;
+    return $filter('filter')(alltasks, mask, true);
   };
 
   var taskPromise;
@@ -18,7 +18,7 @@ angular.module('ngcourse.tasks', [])
     return service.getTasks()
       .then(function(tasks) {
         return service.filterTasks(tasks, {
-          owner: users.getUsername()||'alice'
+          owner: users.getUsername() ||'alice'
         });
       });
   };
