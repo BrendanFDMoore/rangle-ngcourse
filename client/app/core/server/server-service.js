@@ -2,7 +2,7 @@
 
 angular.module('ngcourse.server', [])
 
-.constant('API_BASE_URL', 'http://ngcourse.herokuapp.com')
+.constant('API_BASE_URL', 'https://ngcourse.herokuapp.com')
 
 .factory('server', function($http, API_BASE_URL, users) {
   var service = {};

@@ -6,6 +6,8 @@ angular.module('ngcourse')
 
   var vm = this;
 
+  vm.owner = '';
+  vm.description = '';
   vm.tasks = [];  
 
   tasks.getMyTasks()
@@ -17,6 +19,21 @@ angular.module('ngcourse')
 
   vm.addTask = function() {
     vm.tasks.push({owner:'alice',description:'Some new task...'});
+  };
+
+  vm.createTask = function() {
+    var newTask = {
+      owner:vm.owner,
+      description:vm.description
+    };
+    $log.info(newTask);
+    tasks.createTask(newTask)
+      .then(function(tasks){
+        vm.owner = '';
+        vm.description = '';
+        vm.tasks = tasks;
+      })
+      .then(null, $log.error);
   };
 })
 .run(function($log) {

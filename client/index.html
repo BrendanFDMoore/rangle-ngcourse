@@ -39,7 +39,12 @@
             </tr>
           </table>
 
-          <button ng-click="taskList.addTask()">Add task</button>          
+          <button ng-click="taskList.addTask()">Add task</button>
+          <div>
+            Enter owner: <input type="text" placeholder="owner" ng-model="taskList.owner"/><br/>
+            Enter description: <input type="text" placeholder="description" ng-model="taskList.description"/><br/>
+            <button ng-click="taskList.createTask()">Add custom task</button>
+          </div>
         </div>
       </div>
     </div>
