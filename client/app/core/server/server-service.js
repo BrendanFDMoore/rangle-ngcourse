@@ -17,5 +17,17 @@ angular.module('ngcourse.server', [])
       });
   };
 
+  service.post = function (path, data) {
+    return $http.post(API_BASE_URL + path, data);
+  }
+
+  service.put = function (path, id, data) {
+    return $http.put(API_BASE_URL + path + '/' + id, data);
+  }
+
+  service.delete = function (path, id) {
+    return $http.delete(API_BASE_URL + path + '/' + id, data);
+  }
+
   return service;
 });

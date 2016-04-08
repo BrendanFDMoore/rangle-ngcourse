@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ngcourse.tasks', [])
+angular.module('ngcourse.tasks', ['ngcourse.server'])
 .factory('tasks', function($filter, server, users) {
   var service = {};
 
@@ -18,7 +18,7 @@ angular.module('ngcourse.tasks', [])
     return service.getTasks()
       .then(function(tasks) {
         return service.filterTasks(tasks, {
-          owner: users.getUsername() ||'alice'
+          owner: users.getUsername() || 'alice'
         });
       });
   };

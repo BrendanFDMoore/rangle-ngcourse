@@ -7,12 +7,10 @@
       // Mock 'users'.
       $provide.service('users', function() {
         var service = {};
-        var data = [{
-          description: 'Mow the lawn'
-        }];
+        var data = 'alice';
 
         service.getUsername = function () {
-          return 'alice';
+          return Q.when(data);
           // or try this: Q.reject(new Error('Some Error'));
         };
         return service;
@@ -23,6 +21,7 @@
       $provide.service('server', function() {
         var service = {};
         var data = [{
+          owner: 'bob',
           description: 'Mow the lawn'
         }];
 
@@ -38,8 +37,6 @@
       });
     }));
 
-
-
     it('should get tasks', function() {
       var tasks = getService('tasks');
       return tasks.getTasks()
@@ -48,7 +45,7 @@
         });
     });
 
-    it('should only call server.get once', function() {
+    /*it('should only call server.get once', function() {
       var tasks = getService('tasks');
       var server = getService('server');
       server.get.reset(); // Reset the spy.
@@ -59,5 +56,5 @@
         .then(function () {
           server.get.should.have.been.calledOnce; // Check the number of calls.
         });
-    });
+    });*/
   });
