@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('ngcourse.users', [])
-.factory('users', function($q) {
+angular.module('ngcourse.users', ['ngcourse.server'])
+.factory('users', function($q, server) {
   var service = {};
   var users = [];
 
@@ -20,8 +20,27 @@ angular.module('ngcourse.users', [])
     return service.userAuthPromise.promise;
   };
 
+  var userPromise;
   service.getUsers = function () {
-    return users;
+    if (userPromise) return userPromise.promise;
+    userPromise = $q.defer();
+    service.whenAuthenticated()
+      .then(function(data){
+        server.get('/api/v1/users')
+          .then(function(users){
+            userPromise.resolve(users);
+          })
+          .then(null,function(msg){
+            $log.error(msg);
+            userPromise.reject(msg);
+          });
+      })
+      .then(null,function(){
+        $log.error(msg);
+        userPromise.reject(msg);
+      });
+
+    return userPromise.promise;
   };
 
   return service;
