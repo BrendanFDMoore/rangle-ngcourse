@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
-.factory('tasks', function($filter, $q, server, users) {
+.factory('tasks', function($log, $filter, $q, server, users) {
   var service = {};
 
   service.filterTasks = function(alltasks, mask){
@@ -20,8 +20,35 @@ angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
 
   var taskPromise;
   service.getTasks = function () {
-    taskPromise = taskPromise || server.get('/api/v1/tasks');
-    return taskPromise;
+    if (taskPromise) return taskPromise.promise;
+
+    taskPromise = $q.defer();
+    users.whenAuthenticated()
+      .then(function(data){
+        //console.log('whenAuthenticated success');
+        server.get('/api/v1/tasks')
+          .then(function(tasks){
+            //console.log('server.get success');
+            //console.log(tasks);
+            //console.log(taskPromise);
+            taskPromise.resolve(tasks);
+            //console.log('server.get success done');
+          })
+          .then(null,function(msg){
+            //console.log(msg);
+            //console.log('server.get fail');
+            $log.error(msg);
+            taskPromise.reject(msg);
+            //console.log('server.get fail done');
+          });
+      })
+      .then(null,function(){
+        //console.log('whenAuthenticated fail');
+        $log.error(msg);
+        taskPromise.reject(msg);
+      });
+
+    return taskPromise.promise;
   };
 
   service.getMyTasks = function () {

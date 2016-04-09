@@ -22,13 +22,16 @@
         ];
 
         service.getUsername = function () {
-          return Q.when(fixedusers[2].username);
+          return Q.when(users[2].username);
         };
 
         service.getUsers = function () {
           return Q.when(users);
         };
 
+        service.whenAuthenticated = function () {
+          return Q.when(users);
+        };
 
         return service;
       });
@@ -70,6 +73,8 @@
       var tasks = getService('tasks');
       return tasks.getTasks()
         .then(function (receivedTasks) {
+          //console.log('receivedTasks');
+          //console.log(receivedTasks);
           expect(receivedTasks.length).to.equal(1);
         });
     });
