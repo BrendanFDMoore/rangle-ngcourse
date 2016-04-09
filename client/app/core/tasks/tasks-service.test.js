@@ -7,12 +7,29 @@
       // Mock 'users'.
       $provide.service('users', function() {
         var service = {};
-        var data = 'alice';
+        var users = [{
+            username: 'bob',
+            displayName: 'Bob BeebleBrox'
+          },
+          {
+            username: 'ed',
+            displayName: 'Ed Mirvish'
+          },
+          {
+            username: 'alice',
+            displayName: 'Alice Hatter'
+          }
+        ];
 
         service.getUsername = function () {
-          return Q.when(data);
-          // or try this: Q.reject(new Error('Some Error'));
+          return Q.when(fixedusers[2].username);
         };
+
+        service.getUsers = function () {
+          return Q.when(users);
+        };
+
+
         return service;
       });
 
@@ -59,8 +76,8 @@
 
     it('should return a promise', function() {
       var tasks = getService('tasks');
-      var newTask={
-        owner: 'Alice',
+      var newTask = {
+        owner: 'alice',
         description: 'A newly-created task.'
       };
       return tasks.createTask(newTask)
@@ -69,7 +86,7 @@
         });
     });
 
-    it('should return a rejected with message null parameter not valid', function() {
+    it('should return a rejected promise with message null parameter not valid', function() {
       var tasks = getService('tasks');
       
       return tasks.createTask(null)
@@ -82,43 +99,46 @@
         });
     });
 
-    it('should return a rejected with message empty owner not valid', function() {
+    it('should return a rejected promise with message empty owner not valid', function() {
       var tasks = getService('tasks');
       var newTask={
         owner: '',
         description: 'A newly-created task.'
       };
       return tasks.createTask(newTask)
+        .then(function(){throw new Error('FAIL: test should not pass.');})
         .then(null, function(error){
           console.log(error.message);
           expect(error.message).to.equal('empty owner not valid');
         });
     });
 
-    it('should return a rejected with message empty description not valid', function() {
+    it('should return a rejected promise with message empty description not valid', function() {
       var tasks = getService('tasks');
       var newTask={
-        owner: 'filled',
+        owner: 'bob',
         description: ''
       };
       return tasks.createTask(newTask)
+        .then(function(){throw new Error('FAIL: test should not pass.');})
         .then(null, function(error){
           console.log(error.message);
           expect(error.message).to.equal('empty description not valid');
         });
     });
 
-
-    /*it('should only call server.get once', function() {
+    it('should return a rejected promise with message task owner not a valid user', function() {
       var tasks = getService('tasks');
-      var server = getService('server');
-      server.get.reset(); // Reset the spy.
-      return tasks.getTasks() // Call getTasks the first time.
-        .then(function () {
-          return tasks.getTasks(); // Call it again.
-        })
-        .then(function () {
-          server.get.should.have.been.calledOnce; // Check the number of calls.
+      var newTask={
+        owner: 'alicefake',
+        description: 'non empty'
+      };
+      return tasks.createTask(newTask)
+        .then(function(){throw new Error('FAIL: test should not pass.');})
+        .then(null, function(error){
+          console.log(error.message);
+          expect(error.message).to.equal('task owner not a valid user');
         });
-    });*/
+    });
+
   });

@@ -1,12 +1,22 @@
 'use strict';
 
-angular.module('ngcourse.tasks', ['ngcourse.server'])
+angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
 .factory('tasks', function($filter, $q, server, users) {
   var service = {};
 
   service.filterTasks = function(alltasks, mask){
     return $filter('filter')(alltasks, mask, true);
   };
+
+  service.filterUsers = function(allusers, usermask){
+    return $filter('filter')(allusers, usermask, true);
+  };
+
+  service.userIsValid = function(allusers, checkname){
+    //console.log('service.userIsValid: ',allusers,checkname);
+    return service.filterUsers(allusers,{username:checkname}).length>0;
+  }
+  
 
   var taskPromise;
   service.getTasks = function () {
@@ -30,7 +40,7 @@ angular.module('ngcourse.tasks', ['ngcourse.server'])
       deferred.reject(new Error('null parameter not valid'));
       return deferred.promise;
     }
-    
+
     if(!newTask.owner || !(newTask.owner.length > 0)){
       
       deferred.reject(new Error('empty owner not valid'));
@@ -43,8 +53,33 @@ angular.module('ngcourse.tasks', ['ngcourse.server'])
       return deferred.promise;
     } 
 
-    //data looks valid, so post it
-    return server.post(newTask);      
+    users.getUsers()
+      .then(function(userList){
+        //console.log('userList');
+        //console.log(userList);
+        //console.log(newTask.owner);
+        if(service.userIsValid(userList, newTask.owner)){          
+          //data looks valid, so post it
+          return server.post(newTask)
+            .then(function(data){
+              deferred.resolve(data);
+            })
+            .then(null,function(msg){
+              $log.error(msg);
+              deferred.reject(msg);
+            });
+        }
+        else{
+          deferred.reject(new Error('task owner not a valid user'));
+          return deferred.promise;    
+        }
+      })
+      .then(null, function(){
+        deferred.reject(new Error('error fetching user list'));
+        return deferred.promise;  
+      })
+    return deferred.promise;
+    
   };
 
   return service;
