@@ -7,17 +7,47 @@ angular.module('ngcourse.users', ['ngcourse.server'])
 
   service.userAuthPromise = $q.defer();
 
-  service.username = '';
+  service.user = null;
+  service.username = null;
+  service.password = null;
+  service.error = null;
+  service.login = function(inUser, inPass){
+    service.username = inUser;
+    service.password = inPass;
+    return service.userIsValid(service.username)
+      .then(function (data){
+        console.log(service.username);
+        console.log('real userIsValid success');
+        console.log(data);
+        service.error = null;      
+        service.userAuthPromise.resolve(service.username);
+        return true;
+      }, function(msg){
+        console.log(service.username);
+        console.log('real userIsValid fail');
+        console.log(msg);
+        service.error = 'NOT A VALID USER';
+        //service.userAuthPromise.reject(service.error);
+        userValidPromise = null;
+        throw new Error(service.error);
+      });
+      //.catch(console.log.bind(console));
+  };
+
   service.setUsername = function (name) {
     service.userIsValid(name)
-      .then(function (valid){
+      .then(function (data){
+        console.log('real userIsValid success');
+        console.log(data);
         service.username = name;
         service.userAuthPromise.resolve(service.username);
-      })
-      .then(null, function(err){
+      }, function(msg){
+        console.log('real userIsValid fail');
+        console.log(msg);
         service.username = 'NOT A VALID USER';
         service.userAuthPromise.reject();
       });
+      //.catch(console.log.bind(console));
   };
 
   service.getUsername = function () {
@@ -29,27 +59,44 @@ angular.module('ngcourse.users', ['ngcourse.server'])
   };
 
   service.filterUsers = function(allusers, usermask){
+    console.log('filterUsers');
+    console.log($filter('filter')(allusers, usermask, true));
     return $filter('filter')(allusers, usermask, true);
   };
 
   var userValidPromise;
   service.userIsValid = function(checkname){
-    console.log('real users userIsValid')
+    console.log('real users userIsValid');
     //console.log('service.userIsValid: ',allusers,checkname);
     if (userValidPromise) return userValidPromise.promise;
 
     userValidPromise = $q.defer();
 
-    return service.getUsers()
+    service.getUsers()
       .then(function(){
-        if (service.filterUsers(validusers,{username:checkname}).length>0)
-          userValidPromise.resolve(true);
-        else
-          userValidPromise.reject(false);
-      })
-      .then(null,function(err){
+        console.log('real getUsers check if userIsValid');
+        var filtered = service.filterUsers(validusers,{username:checkname});
+        console.log('filtered');
+        console.log(filtered);
+        if (filtered.length>0){
+          console.log('filterUsers not length 0');
+          userValidPromise.resolve(true)
+          return true;
+        }
+        else {
+          console.log('filterUsers is length 0');
+          userValidPromise.reject(false)
+          throw new Error('User not valid');
+        }
+      }, function(err){
+        console.log('real getUsers fail');
+        console.log(err);
         userValidPromise.reject(false);
-      });
+        throw new Error('getUsers failed');        
+      })
+      //.catch(console.log.bind(console));
+
+    return userValidPromise.promise;
   }
 
   var getUsersPromise;
@@ -59,16 +106,23 @@ angular.module('ngcourse.users', ['ngcourse.server'])
     getUsersPromise = $q.defer();
     //service.whenAuthenticated()
     //  .then(function(data){
+    console.log('server.get calling...');
     server.get('/api/v1/users')
       .then(function(users){
+        console.log('server.get success');
+        console.log(users);
         validusers = users;
         getUsersPromise.resolve(validusers);
+        return validusers;
       })
       .then(null,function(msg){
-        $log.error(msg);
+        console.error('server.get fail');
+        console.log(msg);
         validusers = [];
         getUsersPromise.reject(msg);
-      });
+        throw new Error('getUsers failed to fetch users');
+      })
+      .catch(console.log.bind(console));
     //  })
     //   .then(null,function(){
     //     $log.error(msg);
