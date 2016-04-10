@@ -35,6 +35,9 @@ angular.module('ngcourse')
       })
       .then(null, $log.error);
   };
+  vm.getUserDisplayName = function(name){
+    return name;
+  };
 })
 .run(function($log) {
   $log.info('TaskListCtrl ready!');

@@ -12,6 +12,11 @@ angular.module('ngcourse')
     users.setUsername(vm.username);
   };
 
+  users.whenAuthenticated()
+  .then(function(){
+    vm.userDisplayName = users.getUsername();
+  });
+
 })
 .run(function($log) {
   $log.info('MainCtrl ready!');
