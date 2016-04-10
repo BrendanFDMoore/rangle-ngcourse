@@ -40,7 +40,9 @@
         </div>
 
         <hr>
-        <ngc-user username-alt="Alt Name"></ngc-user>
+        <ngc-user username-alt="Alt Name" two-way-bind="main.twowaytest" event-handler="main.signalCommsSuccess()"></ngc-user>
+        <br />
+        <span>Two way test: {{main.twowaytest}}</span>
         <hr>
 
         <!-- <div ng-show="main.isAuthenticated" ng-controller="TaskListCtrl as taskList">

@@ -4,6 +4,7 @@ angular.module('ngcourse')
 
 .controller('MainCtrl', function($log, $http, users) {
   var vm = this;
+  vm.twowaytest = "Not authed yet...";
   vm.error = null;
   vm.isAuthenticated = false;
   vm.login = function(username, password) {    
@@ -23,7 +24,9 @@ angular.module('ngcourse')
       vm.isAuthenticated = true;
       vm.userDisplayName = users.getUsername();
     });
-
+  vm.signalCommsSuccess = function(){
+    console.log('event binding success');
+  };
 })
 .run(function($log) {
   $log.info('MainCtrl ready!');
