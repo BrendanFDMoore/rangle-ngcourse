@@ -55,7 +55,7 @@
           //done();
         })
         .then(null,function (msg) {
-          $log.error(msg);
+          console.error(msg);
         });
     });
 

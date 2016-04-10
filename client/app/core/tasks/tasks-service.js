@@ -8,16 +8,6 @@ angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
     return $filter('filter')(alltasks, mask, true);
   };
 
-  service.filterUsers = function(allusers, usermask){
-    return $filter('filter')(allusers, usermask, true);
-  };
-
-  service.userIsValid = function(allusers, checkname){
-    //console.log('service.userIsValid: ',allusers,checkname);
-    return service.filterUsers(allusers,{username:checkname}).length>0;
-  }
-  
-
   var taskPromise;
   service.getTasks = function () {
     if (taskPromise) return taskPromise.promise;
@@ -42,7 +32,7 @@ angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
             //console.log('server.get fail done');
           });
       })
-      .then(null,function(){
+      .then(null,function(msg){
         //console.log('whenAuthenticated fail');
         $log.error(msg);
         taskPromise.reject(msg);
@@ -61,6 +51,7 @@ angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
   };
 
   service.createTask = function (newTask) {
+    console.log('start of service.createTask');
     var deferred = $q.defer();
     if(null == newTask) {
       
@@ -80,30 +71,39 @@ angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
       return deferred.promise;
     } 
 
+    console.log('start of service.createTask');
     users.getUsers()
       .then(function(userList){
-        //console.log('userList');
-        //console.log(userList);
-        //console.log(newTask.owner);
-        if(service.userIsValid(userList, newTask.owner)){          
-          //data looks valid, so post it
-          return server.post(newTask)
-            .then(function(data){
-              deferred.resolve(data);
-            })
-            .then(null,function(msg){
-              $log.error(msg);
-              deferred.reject(msg);
-            });
-        }
-        else{
-          deferred.reject(new Error('task owner not a valid user'));
-          return deferred.promise;    
-        }
+        console.log('userList');
+        console.log(userList);
+        console.log(newTask.owner);
+        users.userIsValid(newTask.owner)
+          .then(function(valid){
+            console.log('users.userIsValid success');
+            //data looks valid, so post it
+            server.post(newTask)
+              .then(function(data){
+                console.log('server.post success');
+                deferred.resolve(data);
+              })
+              .then(null,function(msg){
+                console.log('server.post fail 1');
+                $log.error(msg);
+                console.log('server.post fail 2');
+                deferred.reject(msg);
+              });
+          })
+          .then(null,function(notvalid){
+            console.log('users.userIsValid fail');
+            deferred.reject(new Error('task owner not a valid user'));
+            //return deferred.promise;
+          });
       })
-      .then(null, function(){
+      .then(null, function(msg){
+        $log.error('get users error?');
+        $log.error(msg);
         deferred.reject(new Error('error fetching user list'));
-        return deferred.promise;  
+        //return deferred.promise;
       })
     return deferred.promise;
     

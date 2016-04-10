@@ -21,11 +21,19 @@
           }
         ];
 
+        service.userIsValid = function (name) {
+          if(name==='alice')
+            return Q.when(true);
+          else
+            return Q.reject('Not a valid user');
+        };
+
         service.getUsername = function () {
           return Q.when(users[2].username);
         };
 
         service.getUsers = function () {
+          console.log('mock users getUsers');
           return Q.when(users);
         };
 
@@ -80,6 +88,7 @@
     });
 
     it('should return a promise', function() {
+      console.log('start of promise test');
       var tasks = getService('tasks');
       var newTask = {
         owner: 'alice',
