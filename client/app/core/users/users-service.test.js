@@ -38,7 +38,7 @@
 
     it('should get users', function() {
       var users = getService('users');
-      users.setUsername('alice');
+      //users.setUsername('alice');
       return users.getUsers()
         .then(function (receivedUsers) {
           console.log(receivedUsers);
@@ -49,7 +49,7 @@
 
     it('should return a promise', function() {
       var users = getService('users');
-      users.setUsername('alice');
+      users.login('alice','pw');
       return users.whenAuthenticated()
         .then(function (data) {
           //done();
