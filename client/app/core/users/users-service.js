@@ -34,6 +34,19 @@ angular.module('ngcourse.users', ['ngcourse.server'])
       //.catch(console.log.bind(console));
   };
 
+  service.getUser = function(username){
+    return service.whenAuthenticated()
+      .then(function(){
+        var userObj=service.filterUsers(validusers,{username:username})[0];
+        console.log('userObj');
+        console.log(userObj);
+        return userObj;
+      })
+      .then(null, function(msg){
+        return {};
+      });
+  };
+
   service.setUsername = function (name) {
     service.userIsValid(name)
       .then(function (data){

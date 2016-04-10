@@ -3,12 +3,20 @@
 angular.module('ngcourse')
 .controller('NgcUserDirectiveCtrl', function (users) {
   var vm = this;
+  vm.username = null;
+  vm.userData = null;
+  //vm.userData = users.getUser(vm.username);
   users.whenAuthenticated()
     .then(function (name){
+      vm.username = name;
       vm.userDisplayName = name;
       vm.twoWayBind = "I got authed!";
       vm.eventHandler();
-      //var userData = users.getUser(vm.username);
+      users.getUser(vm.username)
+        .then(function(data){
+          console.log(data);
+          vm.userData = data;
+        });
     });
 
 })
