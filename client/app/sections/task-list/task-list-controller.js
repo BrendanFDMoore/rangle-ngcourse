@@ -5,26 +5,28 @@ angular.module('ngcourse')
 .controller('TaskListCtrl', function($log, $http, $filter, users, tasks, router) {
 
   var vm = this;
+  vm.tasks = [];  
+  vm.addTask = router.goToAddTask;
+  vm.editTask = router.goToTask;
 
   vm.username = '';
-  users.whenAuthenticated()
+  users.whenReady()
     .then(function(){
        vm.username = users.getUsername();
-    });
+    })
+    .then(null, $log.error);
 
-  vm.owner = '';
-  vm.description = '';
-  vm.tasks = [];  
+  // vm.owner = '';
+  // vm.description = '';
+  
 
-  tasks.getMyTasks()
-    .then(function(tasks) {
-      $log.info(tasks);
-      vm.tasks = tasks;
-      tasks.forEach(function(task){
-        task.can = {};
-        task.can.edit = true;
-        console.log(task);
-      });
+  tasks.getTasks()
+    .then(function (tasks) {
+      console.log(tasks);
+      return users.whenReady()
+        .then(function () {
+          vm.tasks = tasks;
+        });
     })
     .then(null, $log.error);
 
@@ -32,33 +34,7 @@ angular.module('ngcourse')
     vm.tasks.push({owner:'alice',description:'Some new task...'});
   };*/
 
-  vm.addTask = router.goToAddTask;
-
-  vm.editTask = router.goToTask;
-
-  vm.createTask = function() {
-    var newTask = {
-      owner:vm.owner,
-      description:vm.description
-    };
-    $log.info(newTask);
-    tasks.createTask(newTask)
-      .then(function(tasks){
-        vm.owner = '';
-        vm.description = '';
-        vm.tasks = tasks;
-      })
-      .then(null, $log.error);
-  };
-  vm.getUserDisplayName = function(name){
-    //return name;
-    return users.getUserDisplayName(name);
-    /*return users.getUserDisplayName(name)
-      .then(function(displayName){
-        return displayName;
-      })
-      .catch(console.log.bind(console));*/
-  };
+  vm.getUserDisplayName = users.getUserDisplayName;
 })
 .run(function($log) {
   $log.info('TaskListCtrl ready!');

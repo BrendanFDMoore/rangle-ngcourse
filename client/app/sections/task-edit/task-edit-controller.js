@@ -11,14 +11,7 @@ angular.module('ngcourse')
   console.log($stateParams._id)
   tasks.getTask($stateParams._id)
     .then(function (response) {
-      console.log('response');
-      console.log(response);
-      if(response.length>0){
-        vm.task = response[0];
-      }
-      else{
-        vm.task = null;
-      }
+      vm.task = response;
     })
     .then(null, $log.error);
 

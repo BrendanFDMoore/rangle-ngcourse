@@ -31,7 +31,7 @@
     </span>
 
     <button
-      ng-click="main.login(loginForm.username, loginForm.password)"
+      ng-click="main.login(loginForm)"
       ng-disabled="loginForm.form.$invalid">Login</button>
     <p>
       Is form valid: {{ !loginForm.form.$invalid }}<br>

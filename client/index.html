@@ -3,6 +3,7 @@
   <head>
 
     <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/koast-angular/dist/koast.js"></script>
     <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="/bower_components/lodash/dist/lodash.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
@@ -20,38 +21,15 @@
   </head>
   <body>
     <div ng-app="ngcourse">
-      <!-- <div ng-controller="MainCtrl as main">
-        <div ng-hide="main.isAuthenticated" ui-view></div>
-        <div ng-hide="main.isAuthenticated" ng-controller="LoginFormCtrl as loginForm">
-          Enter username: <input ng-model="loginForm.username"/><br/>
-          Password: <input type="password" ng-model="loginForm.password"/><br/>
-          <div ng-show="main.errorMessage">{{main.errorMessage}}</div>
-          <button ng-click="main.login(loginForm.username, loginForm.password)">Login</button>
-          <div ng-show="main.error">
-            Error: {{main.error}}!
-          </div>          
+      <div ng-controller="MainCtrl as main">
+        <div ng-show="main.user.isAuthenticated">
+          Hello, <span>{{main.userDisplayName}}</span>!
+          <button ng-click="main.logout()">Logout</button>
         </div>
-
-        <div ng-show="main.isAuthenticated">
-          Hello, {{main.username}}!
-        </div>
-
-        <hr>
-
-        <div  ng-show="main.isAuthenticated">
-          <div ui-view></div>
-        </div>
-
-        <hr>
-        <ngc-user username-alt="Alt Name" two-way-bind="main.twowaytest" event-handler="main.signalCommsSuccess()"></ngc-user>
-        <br />
-        <span>Two way test: {{main.twowaytest}}</span>
-        <hr>        
-      </div> -->
-      <div ui-view></div>
+        <div ui-view></div>
+      </div>
+      <hr>
       <button ui-sref="home">Home</button>
     </div>
-    
-
   </body>
 </html>

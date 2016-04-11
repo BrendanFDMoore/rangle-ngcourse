@@ -1,33 +1,48 @@
 'use strict';
 
-angular.module('ngcourse')
-
-.controller('MainCtrl', function($log, $http, $state, users) {
+angular.module('ngcourse.main-ctrl', [
+  'ngcourse.users',
+  'koast'
+])
+.controller('MainCtrl', function($log, $state, users, koast) {
   var vm = this;
-  vm.twowaytest = "Not authed yet...";
+  vm.twowaytest = 'Not authed yet...';
   vm.error = null;
-  vm.isAuthenticated = false;
-  vm.login = function(username, password) {    
-    vm.username = username;
-    vm.password = password;
-    users.login(vm.username,vm.password)
-      .then(function(data){
-        vm.error = null;
-        $state.go('tasks');
-      })
-      .then(null,function(err){
-        vm.error = err.message;
-      });
-  };
-
-  users.whenAuthenticated()
-    .then(function(){
-      vm.isAuthenticated = true;
-      vm.userDisplayName = users.getUsername();
-    });
   vm.signalCommsSuccess = function(){
     console.log('event binding success');
   };
+
+  vm.user = koast.user;
+
+  koast.user.whenAuthenticated()
+    .then(function() {
+      return users.whenReady();
+    })
+    .then(function() {
+      console.log(koast.user.data.username);
+      vm.userDisplayName = users.getUserDisplayName(koast.user.data.username);
+      console.log(vm.userDisplayName);
+    })
+    .then(null, $log.error);
+
+  function showLoginError(errorMessage) {
+    vm.errorMessage = 'Login failed.';
+    $log.error(errorMessage);
+  }
+
+  vm.login = function (form) {
+    koast.user.loginLocal(form)
+      .then(function(){
+        $state.go('tasks');
+      })
+      .then(null, showLoginError);
+  };
+  vm.logout = function () {
+    koast.user.logout()
+      .then(null, $log.error);
+  };
+
+  
 })
 .run(function($log) {
   $log.info('MainCtrl ready!');
