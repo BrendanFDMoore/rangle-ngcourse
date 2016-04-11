@@ -24,6 +24,7 @@ body {
   padding-right: 10px;
 }
 
+/*Added highlighting for input validation feedback*/
 .login input.ng-invalid.ng-touched {
   background-color: #FDD;
 }

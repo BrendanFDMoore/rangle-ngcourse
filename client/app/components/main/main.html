@@ -11,6 +11,8 @@
     Enter username: <input
       ng-model="loginForm.username"
       name="username"
+      ng-minlength="3"
+      ng-pattern="/^[a-z]+$/"
       required>
     <br>
 
@@ -21,8 +23,28 @@
       required>
     <br>
 
+    Email (optional): <input type="email" name="email" ng-model="loginForm.email">
+    </input><br>
+
+    <span ng-show="loginForm.form.email.$invalid">
+      Please enter a valid email address.
+    </span>
+
     <button
       ng-click="main.login(loginForm.username, loginForm.password)"
       ng-disabled="loginForm.form.$invalid">Login</button>
+    <p>
+      Is form valid: {{ !loginForm.form.$invalid }}<br>
+      Is username valid: {{ !loginForm.form.username.$invalid }}<br>
+      Is password valid: {{ !loginForm.form.password.$invalid }}
+    </p>
+    <p ng-show="loginForm.form.username.$invalid">
+      Username problems:
+      {{ loginForm.form.username.$error}}
+    </p>
+    <p ng-show="loginForm.form.password.$invalid">
+      Password problems:
+      {{ loginForm.form.password.$error}}
+    </p>
   </form>
 </div>
