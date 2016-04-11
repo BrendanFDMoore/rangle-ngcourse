@@ -17,17 +17,17 @@ angular.module('ngcourse.users', ['ngcourse.server'])
     service.password = inPass;
     return service.userIsValid(service.username)
       .then(function (data){
-        console.log(service.username);
-        console.log('real userIsValid success');
-        console.log(data);
+        //console.log(service.username);
+        //console.log('real userIsValid success');
+        //console.log(data);
         service.error = null;
         service.user = service.filterUsers(validusers,{username:service.username})[0];
         service.userAuthPromise.resolve(service.username);
         return true;
       }, function(msg){
-        console.log(service.username);
-        console.log('real userIsValid fail');
-        console.log(msg);
+        //console.log(service.username);
+        //console.log('real userIsValid fail');
+        //console.log(msg);
         service.error = 'NOT A VALID USER';
         //service.userAuthPromise.reject(service.error);
         userValidPromise = null;
@@ -40,8 +40,8 @@ angular.module('ngcourse.users', ['ngcourse.server'])
     return service.whenAuthenticated()
       .then(function(){
         var userObj=service.filterUsers(validusers,{username:service.username})[0];
-        console.log('userObj');
-        console.log(userObj);
+        //console.log('userObj');
+        //console.log(userObj);
         return userObj;
       })
       .then(null, function(msg){
@@ -50,29 +50,13 @@ angular.module('ngcourse.users', ['ngcourse.server'])
   };
 
   service.getUserDisplayName = function(username){
-    console.log('service.getUserDisplayName ');
-    // return service.whenAuthenticated()
-    //   .then(function(valid){
-    //     console.log('service.getUserDisplayName.whenAuthenticated success ');
-    //     return service.getUser(username);
-    //       // .then(function(user){
-    //       //   console.log('service.getUserDisplayName.whenAuthenticated success getUser return');
-    //       //   return user.displayName;
-    //       // });
-    //   })
-    //   .then(function(user){
-    //     console.log('service.getUserDisplayName.whenAuthenticated success getUser return');
-    //     return user.displayName;
-    //   });
-    //   /*.then(null, function(msg){
-    //     return '';
-    //   });*/
-    console.log(validusers);
-    console.log(username);
+    //console.log('service.getUserDisplayName ');
+    //console.log(validusers);
+    //console.log(username);
     var filteredUsers = service.filterUsers(validusers,{username:username});
     if (filteredUsers.length>0){
       var dn = filteredUsers[0].displayName;
-      console.log(dn);
+      //console.log(dn);
       return dn;
     }
     else {
@@ -83,13 +67,13 @@ angular.module('ngcourse.users', ['ngcourse.server'])
   service.setUsername = function (name) {
     service.userIsValid(name)
       .then(function (data){
-        console.log('real userIsValid success');
-        console.log(data);
+        //console.log('real userIsValid success');
+        //console.log(data);
         service.username = name;
         service.userAuthPromise.resolve(service.username);
       }, function(msg){
-        console.log('real userIsValid fail');
-        console.log(msg);
+        //console.log('real userIsValid fail');
+        //console.log(msg);
         service.username = 'NOT A VALID USER';
         service.userAuthPromise.reject();
       });
@@ -105,14 +89,14 @@ angular.module('ngcourse.users', ['ngcourse.server'])
   };
 
   service.filterUsers = function(allusers, usermask){
-    console.log('filterUsers');
-    console.log($filter('filter')(allusers, usermask, true));
+    //console.log('filterUsers');
+    //console.log($filter('filter')(allusers, usermask, true));
     return $filter('filter')(allusers, usermask, true);
   };
 
   
   service.userIsValid = function(checkname){
-    console.log('real users userIsValid');
+    //console.log('real users userIsValid');
     //console.log('service.userIsValid: ',allusers,checkname);
     if (userValidPromise) {return userValidPromise.promise;}
 
@@ -120,23 +104,23 @@ angular.module('ngcourse.users', ['ngcourse.server'])
 
     service.getUsers()
       .then(function(){
-        console.log('real getUsers check if userIsValid');
+        //console.log('real getUsers check if userIsValid');
         var filtered = service.filterUsers(validusers,{username:checkname});
-        console.log('filtered');
-        console.log(filtered);
+        //console.log('filtered');
+        //console.log(filtered);
         if (filtered.length>0){
-          console.log('filterUsers not length 0');
+          //console.log('filterUsers not length 0');
           userValidPromise.resolve(true);
           return true;
         }
         else {
-          console.log('filterUsers is length 0');
+          //console.log('filterUsers is length 0');
           userValidPromise.reject(false);
           throw new Error('User not valid');
         }
       }, function(err){
-        console.log('real getUsers fail');
-        console.log(err);
+        //console.log('real getUsers fail');
+        //console.log(err);
         userValidPromise.reject(false);
         throw new Error('getUsers failed');        
       });
@@ -147,7 +131,7 @@ angular.module('ngcourse.users', ['ngcourse.server'])
 
   var getUsersPromise;
   service.getUsers = function () {
-    console.log('real users getUsers');
+    //console.log('real users getUsers');
     if (getUsersPromise) { 
       return getUsersPromise.promise;
     }
@@ -169,8 +153,8 @@ angular.module('ngcourse.users', ['ngcourse.server'])
         validusers = [];
         getUsersPromise.reject(msg);
         throw new Error('getUsers failed to fetch users');
-      })
-      .catch(console.log.bind(console));
+      });
+      //.catch(console.log.bind(console));
     //  })
     //   .then(null,function(){
     //     $log.error(msg);

@@ -50,6 +50,36 @@ angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
       });
   };
 
+  /*service.details = function(taskId){
+    console.log('service.details');
+    console.log(taskId);
+    router.goToTask(taskId);
+  };*/
+
+  service.getTask = function(taskId){
+    console.log('tasks.getTask');
+    console.log(taskId);
+    return users.whenAuthenticated()
+      .then(function(data){
+        //console.log('whenAuthenticated success');
+        return server.get('/api/v1/tasks/'+taskId)
+          .then(function(tasks){
+            console.log('server.get single success');
+            console.log(tasks);
+            //console.log(taskPromise);
+            return tasks;
+            //console.log('server.get success done');
+          })
+          .then(null,function(msg){
+            console.log(msg);
+            console.log('server.get single fail');
+            $log.error(msg);
+            throw new Error('Failed to fetch task')
+            //console.log('server.get fail done');
+          });
+      });
+  };
+
   service.createTask = function (newTask) {
     console.log('start of service.createTask');
     var deferred = $q.defer();
@@ -75,32 +105,32 @@ angular.module('ngcourse.tasks', ['ngcourse.users', 'ngcourse.server'])
     users.getUsers()
       .then(function(userList){
         console.log('userList');
-        console.log(userList);
-        console.log(newTask.owner);
+        //console.log(userList);
+        //console.log(newTask.owner);
         users.userIsValid(newTask.owner)
           .then(function(valid){
-            console.log('users.userIsValid success');
+            //console.log('users.userIsValid success');
             //data looks valid, so post it
             server.post(newTask)
               .then(function(data){
-                console.log('server.post success');
+                //console.log('server.post success');
                 deferred.resolve(data);
               })
               .then(null,function(msg){
-                console.log('server.post fail 1');
+                //console.log('server.post fail 1');
                 $log.error(msg);
-                console.log('server.post fail 2');
+                //console.log('server.post fail 2');
                 deferred.reject(msg);
               });
           })
           .then(null,function(notvalid){
-            console.log('users.userIsValid fail');
+            //console.log('users.userIsValid fail');
             deferred.reject(new Error('task owner not a valid user'));
             //return deferred.promise;
           });
       })
       .then(null, function(msg){
-        $log.error('get users error?');
+        //$log.error('get users error?');
         $log.error(msg);
         deferred.reject(new Error('error fetching user list'));
         //return deferred.promise;

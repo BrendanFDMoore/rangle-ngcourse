@@ -2,7 +2,7 @@
 
 angular.module('ngcourse')
 
-.controller('TaskListCtrl', function($log, $http, $filter, users, tasks) {
+.controller('TaskListCtrl', function($log, $http, $filter, users, tasks, router) {
 
   var vm = this;
 
@@ -20,12 +20,21 @@ angular.module('ngcourse')
     .then(function(tasks) {
       $log.info(tasks);
       vm.tasks = tasks;
+      tasks.forEach(function(task){
+        task.can = {};
+        task.can.edit = true;
+        console.log(task);
+      });
     })
     .then(null, $log.error);
 
-  vm.addTask = function() {
+  /*vm.addTask = function() {
     vm.tasks.push({owner:'alice',description:'Some new task...'});
-  };
+  };*/
+
+  vm.addTask = router.goToAddTask;
+
+  vm.editTask = router.goToTask;
 
   vm.createTask = function() {
     var newTask = {

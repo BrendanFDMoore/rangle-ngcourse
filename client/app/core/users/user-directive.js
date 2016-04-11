@@ -14,7 +14,7 @@ angular.module('ngcourse')
       vm.eventHandler();
       users.getUser(vm.username)
         .then(function(data){
-          console.log(data);
+          //console.log(data);
           vm.userData = data;
         });
     });

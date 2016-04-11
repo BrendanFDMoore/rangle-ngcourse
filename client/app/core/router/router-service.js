@@ -36,7 +36,17 @@ angular.module('ngcourse.router', [
           }
         }
       })
-      .state('account', {
+      .state('tasks.add', {
+        url: '/add',
+
+        views: {
+          'actionArea@tasks': {
+            controller: 'TaskAddCtrl as taskAdd',
+            templateUrl: '/app/sections/task-add/task-add.html'
+          }
+        }
+      });
+      /*.state('account', {
         url: '/my-account',
         template: 'my account',
         resolve: {
@@ -54,8 +64,7 @@ angular.module('ngcourse.router', [
       .state('tasksDetailByRegex', {
         url: '/tasks/{_id:[A-Za-z0-9-_]{0,}}',
         template: 'task details with regex'
-      })
-      ;
+      });*/
   })
   .factory('router', function($log, $state, $stateParams) {
     var service = {};
