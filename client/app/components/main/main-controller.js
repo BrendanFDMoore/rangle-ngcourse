@@ -2,7 +2,7 @@
 
 angular.module('ngcourse')
 
-.controller('MainCtrl', function($log, $http, users) {
+.controller('MainCtrl', function($log, $http, $state, users) {
   var vm = this;
   vm.twowaytest = "Not authed yet...";
   vm.error = null;
@@ -13,6 +13,7 @@ angular.module('ngcourse')
     users.login(vm.username,vm.password)
       .then(function(data){
         vm.error = null;
+        $state.go('tasks');
       })
       .then(null,function(err){
         vm.error = err.message;

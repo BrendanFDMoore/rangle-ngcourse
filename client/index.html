@@ -18,7 +18,8 @@
   </head>
   <body>
     <div ng-app="ngcourse">
-      <div ng-controller="MainCtrl as main">
+      <!-- <div ng-controller="MainCtrl as main">
+        <div ng-hide="main.isAuthenticated" ui-view></div>
         <div ng-hide="main.isAuthenticated" ng-controller="LoginFormCtrl as loginForm">
           Enter username: <input ng-model="loginForm.username"/><br/>
           Password: <input type="password" ng-model="loginForm.password"/><br/>
@@ -43,29 +44,9 @@
         <ngc-user username-alt="Alt Name" two-way-bind="main.twowaytest" event-handler="main.signalCommsSuccess()"></ngc-user>
         <br />
         <span>Two way test: {{main.twowaytest}}</span>
-        <hr>
-
-        <!-- <div ng-show="main.isAuthenticated" ng-controller="TaskListCtrl as taskList">
-          {{main.username}}, you've got {{taskList.tasks.length}} tasks<br/>
-          <table>
-            <tr>
-              <th>Owner</th>
-              <th>Task description</th>
-            </tr>
-            <tr ng-repeat="task in taskList.tasks">
-              <td>{{task.owner}}</td>
-              <td>{{task.description}}</td>
-            </tr>
-          </table>
-
-          <button ng-click="taskList.addTask()">Add task</button>
-          <div>
-            Enter owner: <input type="text" placeholder="owner" ng-model="taskList.owner"/><br/>
-            Enter description: <input type="text" placeholder="description" ng-model="taskList.description"/><br/>
-            <button ng-click="taskList.createTask()">Add custom task</button>
-          </div>
-        </div> -->
-      </div>
+        <hr>        
+      </div> -->
+      <div ui-view></div>
     </div>
     
 

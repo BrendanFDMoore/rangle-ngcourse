@@ -6,6 +6,12 @@ angular.module('ngcourse')
 
   var vm = this;
 
+  vm.username = '';
+  users.whenAuthenticated()
+    .then(function(){
+       vm.username = users.getUsername();
+    });
+
   vm.owner = '';
   vm.description = '';
   vm.tasks = [];  
@@ -36,7 +42,13 @@ angular.module('ngcourse')
       .then(null, $log.error);
   };
   vm.getUserDisplayName = function(name){
-    return name;
+    //return name;
+    return users.getUserDisplayName(name);
+    /*return users.getUserDisplayName(name)
+      .then(function(displayName){
+        return displayName;
+      })
+      .catch(console.log.bind(console));*/
   };
 })
 .run(function($log) {
